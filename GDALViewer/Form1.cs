@@ -15,6 +15,8 @@ namespace TiffViewer
 {
     public partial class Form1 : Form
     {
+        private static readonly String VERSION = " v0.2";
+
         private enum RasterMode
         {
             SingleGray,
@@ -31,7 +33,8 @@ namespace TiffViewer
         public Form1(String[] parms)
         {
             InitializeComponent();
-      
+            LocalizeUI();
+
             this.Load += Form1_Load;
             this.SizeChanged += Form1_SizeChanged;
 
@@ -39,6 +42,18 @@ namespace TiffViewer
             {
                 m_imagePath = parms[0];
             }
+        }
+
+        private void LocalizeUI()
+        {
+            this.Text = GDALViewer.Properties.GDALViewerResource.MainForm_Title + VERSION;
+            toolStripDropDownButtonFile.Text = GDALViewer.Properties.GDALViewerResource.Files;
+            ToolStripMenuItemOpen.Text = GDALViewer.Properties.GDALViewerResource.Open;
+            ToolStripMenuItemClose.Text = GDALViewer.Properties.GDALViewerResource.Close;
+            tabPageImage.Text = GDALViewer.Properties.GDALViewerResource.Image;
+            tabPageInfo.Text = GDALViewer.Properties.GDALViewerResource.Info;
+            toolStripLabelDisplayMode.Text = GDALViewer.Properties.GDALViewerResource.DisplayMode;
+            toolStripComboBoxDisplayMode.Items.AddRange(new String[] { GDALViewer.Properties.GDALViewerResource.Original, GDALViewer.Properties.GDALViewerResource.CompositeBands, GDALViewer.Properties.GDALViewerResource.SingleBand});
         }
 
         private void Form1_SizeChanged(object sender, EventArgs e)
@@ -241,309 +256,49 @@ namespace TiffViewer
                 return;
             }
 
-            int noData = 0;
-            int width = pictureBox1.Width;
-            int height = pictureBox1.Height;
+            int width = pictureBoxImage.Width;
+            int height = pictureBoxImage.Height;
 
             if(width == 0 || height == 0)
             {
                 return;
             }
 
-            //String path = @"E:\CloudStation\ImageData\LC81310402017119LGN00_B1.TIF";
-            //String path = @"E:\CloudStation\ImageData\T275_266jz.img";
-            //String path = @"G:\ImageData\510000SC\510000SC\510000SC_L5_TM_2006\510000SC_L5_TM_2006_R1C1.TIF";
             Dataset dataset = Gdal.Open(m_imagePath, Access.GA_ReadOnly);
 
-            richTextBox1.Text = GDALInfo.GetInfo(dataset);
-
-            Debug.WriteLine("Open dataset " + m_imagePath + " successed!");
-            int bandCount = dataset.RasterCount;
-            Debug.WriteLine("contains " + bandCount + " bands");
-            int srcWidth = dataset.RasterXSize;
-            Debug.WriteLine("width " + srcWidth + " pixels");
-            int srcHeight = dataset.RasterYSize;
-            Debug.WriteLine("height " + srcHeight + " pixels");
-            string description = dataset.GetDescription();
-            Debug.WriteLine("description: " + description);
+            richTextBoxInfo.Text = GDALInfo.GetInfo(dataset);
 
             // Creating a Bitmap to store the GDAL image in
             // _bitmap = new Bitmap(width, height, PixelFormat.Format32bppRgb);
 
+            int srcWidth = dataset.RasterXSize;
+            int srcHeight = dataset.RasterYSize;
             _bitmap = ReadBitmapDirect(dataset, 0, 0, srcWidth, srcHeight, width, height);
-            pictureBox1.Image = _bitmap;
-            return;
-
-            Band redBand = dataset.GetRasterBand(1);
-            //Band greenBand = dataset.GetRasterBand(2);
-            //Band blueBand = dataset.GetRasterBand(3);
-
-            //ColorPalette pal = _bitmap.Palette;
-            //for (int i = 0; i < 256; i++)
-            //    pal.Entries[i] = Color.FromArgb(255, i, i, i);00
-            //_bitmap.Palette = pal;
-            DataType srcType = redBand.DataType;//byte类型
-
-            DateTime start = DateTime.Now;
-
-            int[] bandArray = new int[3];
-            for (int i = 0; i < 3; i++)
-            {
-                bandArray[i] = i + 1;
-            }
-
-
-            // BitmapData bitmapData = _bitmap.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadWrite, PixelFormat.Format32bppRgb);
-            // Obtaining the bitmap buffer
-            long before = DateTime.Now.Ticks;
-            BitmapData bitmapData = _bitmap.LockBits(new Rectangle(0, 0, width, height), ImageLockMode.ReadWrite, PixelFormat.Format24bppRgb);
-            try
-            {
-                
-
-                //int stride = bitmapData.Stride;
-                //IntPtr buf = bitmapData.Scan0;
-
-                //blueBand.ReadRaster(0, 0, redBand.XSize, redBand.YSize, buf, width, height, DataType.GDT_Byte, 4, stride);
-                //greenBand.ReadRaster(0, 0, redBand.XSize, redBand.YSize, new IntPtr(buf.ToInt32() + 1), width, height, DataType.GDT_Byte, 4, stride);
-                //redBand.ReadRaster(0, 0, redBand.XSize, redBand.YSize, new IntPtr(buf.ToInt32() + 2), width, height, DataType.GDT_Byte, 4, stride);
-                //TimeSpan renderTime = DateTime.Now - start;
-                //Console.WriteLine("SaveBitmapDirect fetch time: " + renderTime.TotalMilliseconds + " ms");
-
-                int stride = bitmapData.Stride;
-                IntPtr buf = bitmapData.Scan0;
-                CPLErr err = dataset.ReadRaster(0, 0, redBand.XSize, redBand.YSize, buf, width, height, DataType.GDT_Int32, 3, bandArray, 0, 0, 0);
-
-                //for (int i = 0; i < srcHeight; i++)
-                //{
-                //    CPLErr err = redBand.ReadRaster(0, 0, redBand.XSize, redBand.YSize, buf, width, height, DataType.GDT_Byte, 1, stride);
-                //}
-
-
-                if (err != CPLErr.CE_None)
-                {
-                    Debug.WriteLine("Read failed");
-                }
-            }
-            finally
-            {
-                _bitmap.UnlockBits(bitmapData);
-            }
-
-            long span = (DateTime.Now.Ticks - before) / 1000;
-            Debug.WriteLine("Read cost :" + span + " ms");
-
-            Color read;
-            Color left = Color.Black;
-            //using (Graphics g = Graphics.FromImage(_bitmap))
-            //{
-            //    int startX = 0;
-            //    int startY = 0;
-            //    for (int i = 0; i < height; i++)
-            //    {
-            //        //for (int j = 0; j < width; j++)
-            //        {
-            //            read = _bitmap.GetPixel(i, i);
-
-            //            if ((read.R + read.G + read.B) != noData)
-            //            {
-            //                startX = i;
-            //                startY = i;
-            //                break;
-            //            }
-            //        }
-            //    }
-
-            //    int recordX = startX;
-            //    int recordY = startY;
-
-            //    do
-            //    {
-            //        int direction = 0;
-            //        int value0 = 0;
-            //        int before = 0;
-            //        int curValue = 0;
-
-            //        Debug.WriteLine("CurPoint is " + recordX + " , " + recordY);
-            //        while (direction <= 8)
-            //        {
-            //            int curX = recordX;
-            //            int curY = recordY;
-
-            //            MoveCur(direction, ref curX, ref curY);
-
-            //            read = _bitmap.GetPixel(curX, curY);
-            //            curValue = read.R + read.G + read.B;
-            //            Debug.WriteLine("    value: " + curValue + " --- " + direction);
-
-            //            //if(curValue != noData)
-            //            //{
-            //            //    int inX = recordX;
-            //            //    int inY = recordY;
-
-            //            //    MoveCur(0, ref inX, ref inY);
-
-            //            //    read = _bitmap.GetPixel(inX, inY);
-            //            //    int value0 = read.R + read.G + read.B;
-
-            //            //    inX = recordX;
-            //            //    inY = recordY;
-
-            //            //    MoveCur(2, ref inX, ref inY);
-
-            //            //    read = _bitmap.GetPixel(inX, inY);
-            //            //    int value2 = read.R + read.G + read.B;
-
-            //            //    inX = recordX;
-            //            //    inY = recordY;
-
-            //            //    MoveCur(4, ref inX, ref inY);
-
-            //            //    read = _bitmap.GetPixel(inX, inY);
-            //            //    int value4 = read.R + read.G + read.B;
-
-            //            //    inX = recordX;
-            //            //    inY = recordY;
-
-            //            //    MoveCur(6, ref inX, ref inY);
-
-            //            //    read = _bitmap.GetPixel(inX, inY);
-            //            //    int value6 = read.R + read.G + read.B;
-
-            //            //    if(value0 == noData || value2 == noData || value4 == noData || value6 == noData)
-            //            //    {
-            //            //        _bitmap.SetPixel(curX, curY, Color.Red);
-
-            //            //        recordX = curX;
-            //            //        recordY = curY;
-
-            //            //        break;
-            //            //    }
-            //            //}
-
-            //            if (direction == 0)
-            //            {
-            //                before = curValue;
-            //                value0 = curValue;
-            //            }
-
-            //            if (before != noData && curValue == noData)
-            //            {
-            //                curX = recordX;
-            //                curY = recordY;
-
-            //                MoveCur(direction - 1, ref curX, ref curY);
-
-            //                _bitmap.SetPixel(curX, curY, Color.Red);
-
-            //                recordX = curX;
-            //                recordY = curY;
-
-            //                break;
-            //            }
-
-            //            if (before == noData && curValue != noData)
-            //            {
-            //                _bitmap.SetPixel(curX, curY, Color.Red);
-
-            //                recordX = curX;
-            //                recordY = curY;
-
-            //                break;
-            //            }
-
-            //            before = curValue;
-
-            //            direction++;
-            //        }
-
-            //    } while (!(recordX == startX && recordY == startY));
-                
-            //}
-            pictureBox1.Image = _bitmap;
+            pictureBoxImage.Image = _bitmap;
         }
 
 
-
-        /// <summary>
-        /// 3 2 1
-        /// 4 S 0(8)
-        /// 5 6 7
-        /// </summary>
-        /// <param name="direction"></param>
-        /// <param name="curX"></param>
-        /// <param name="curY"></param>
-        private void MoveCur(int direction, ref int curX, ref int curY)
-        {
-            switch (direction)
-            {
-                case 0:
-                    {
-                        curX++;
-                    }
-                    break;
-                case 1:
-                    {
-                        curX++;
-                        curY--;
-                    }
-                    break;
-                case 2:
-                    {
-                        curY--;
-                    }
-                    break;
-                case 3:
-                    {
-                        curX--;
-                        curY--;
-                    }
-                    break;
-                case 4:
-                    {
-                        curX--;
-                    }
-                    break;
-                case 5:
-                    {
-                        curX--;
-                        curY++;
-                    }
-                    break;
-                case 6:
-                    {
-                        curY++;
-                    }
-                    break;
-                case 7:
-                    {
-                        curX++;
-                        curY++;
-                    }
-                    break;
-                case 8:
-                    {
-                        curX++;
-                    }
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        private void 打开ToolStripMenuItem_Click(object sender, EventArgs e)
+        private void ToolStripMenuItemOpen_Click(object sender, EventArgs e)
         {
             ClearAll();
 
             OpenFileDialog openFileDialog = new OpenFileDialog();
             openFileDialog.Multiselect = false;
-            StringBuilder stringBuilder = new StringBuilder("常见影像格式|*.IMG;*.TIF;*.TIFF|常见图片格式|*.JPG;*.PNG;*.GIF");
+            StringBuilder stringBuilder = new StringBuilder(GDALViewer.Properties.GDALViewerResource.SomeRasterFormat);
+            stringBuilder.Append("|*.IMG;*.TIF;*.TIFF|");
+            stringBuilder.Append(GDALViewer.Properties.GDALViewerResource.SomeImageFormat);
+            stringBuilder.Append("|*.JPG;*.PNG;*.GIF");
+
             Dictionary<String, String> dic = GdalConfiguration.GetDriverExtDic();
             foreach (String val in dic.Values)
             {
                 stringBuilder.Append("|");
                 stringBuilder.Append(val);
             }
+
+            stringBuilder.Append("|");
+            stringBuilder.Append(GDALViewer.Properties.GDALViewerResource.AllFormat);
+            stringBuilder.Append("|*.*");
 
             openFileDialog.Filter = stringBuilder.ToString();
             if (openFileDialog.ShowDialog() == DialogResult.OK)
@@ -555,11 +310,14 @@ namespace TiffViewer
         }
 
         private void ClearAll()
-        {
-            pictureBox1.Image.Dispose();
-            pictureBox1.Image = null;
+        { 
+            if(pictureBoxImage.Image != null)
+            {
+                pictureBoxImage.Image.Dispose();
+                pictureBoxImage.Image = null;
+            }
 
-            richTextBox1.Text = "";
+            richTextBoxInfo.Text = "";
 
             InitUI();
            

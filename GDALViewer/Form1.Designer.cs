@@ -29,59 +29,62 @@
         private void InitializeComponent()
         {
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
-            this.pictureBox1 = new System.Windows.Forms.PictureBox();
-            this.tabControl1 = new System.Windows.Forms.TabControl();
+            this.pictureBoxImage = new System.Windows.Forms.PictureBox();
+            this.tabControlImage = new System.Windows.Forms.TabControl();
             this.tabPageImage = new System.Windows.Forms.TabPage();
             this.toolStrip2 = new System.Windows.Forms.ToolStrip();
-            this.toolStripLabel1 = new System.Windows.Forms.ToolStripLabel();
+            this.toolStripLabelDisplayMode = new System.Windows.Forms.ToolStripLabel();
             this.toolStripComboBoxDisplayMode = new System.Windows.Forms.ToolStripComboBox();
-            this.tabPage2 = new System.Windows.Forms.TabPage();
-            this.richTextBox1 = new System.Windows.Forms.RichTextBox();
-            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
-            this.toolStripDropDownButton1 = new System.Windows.Forms.ToolStripDropDownButton();
-            this.ToolStripMenuItemOpen = new System.Windows.Forms.ToolStripMenuItem();
-            this.ToolStripMenuItemClose = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripLabelR = new System.Windows.Forms.ToolStripLabel();
             this.toolStripComboBoxR = new System.Windows.Forms.ToolStripComboBox();
             this.toolStripLabelG = new System.Windows.Forms.ToolStripLabel();
             this.toolStripComboBoxG = new System.Windows.Forms.ToolStripComboBox();
             this.toolStripLabelB = new System.Windows.Forms.ToolStripLabel();
             this.toolStripComboBoxB = new System.Windows.Forms.ToolStripComboBox();
-            this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.toolStripComboBoxSingle = new System.Windows.Forms.ToolStripComboBox();
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
-            this.tabControl1.SuspendLayout();
+            this.tabPageInfo = new System.Windows.Forms.TabPage();
+            this.richTextBoxInfo = new System.Windows.Forms.RichTextBox();
+            this.toolStrip1 = new System.Windows.Forms.ToolStrip();
+            this.toolStripDropDownButtonFile = new System.Windows.Forms.ToolStripDropDownButton();
+            this.ToolStripMenuItemOpen = new System.Windows.Forms.ToolStripMenuItem();
+            this.ToolStripMenuItemClose = new System.Windows.Forms.ToolStripMenuItem();
+            this.toolStripButton1 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripButton2 = new System.Windows.Forms.ToolStripButton();
+            this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxImage)).BeginInit();
+            this.tabControlImage.SuspendLayout();
             this.tabPageImage.SuspendLayout();
             this.toolStrip2.SuspendLayout();
-            this.tabPage2.SuspendLayout();
+            this.tabPageInfo.SuspendLayout();
             this.toolStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
-            // pictureBox1
+            // pictureBoxImage
             // 
-            this.pictureBox1.BackColor = System.Drawing.Color.LightCyan;
-            this.pictureBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.pictureBox1.Location = new System.Drawing.Point(3, 3);
-            this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(736, 503);
-            this.pictureBox1.TabIndex = 0;
-            this.pictureBox1.TabStop = false;
+            this.pictureBoxImage.BackColor = System.Drawing.Color.LightCyan;
+            this.pictureBoxImage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.pictureBoxImage.Location = new System.Drawing.Point(3, 3);
+            this.pictureBoxImage.Name = "pictureBoxImage";
+            this.pictureBoxImage.Size = new System.Drawing.Size(736, 503);
+            this.pictureBoxImage.TabIndex = 0;
+            this.pictureBoxImage.TabStop = false;
             // 
-            // tabControl1
+            // tabControlImage
             // 
-            this.tabControl1.Controls.Add(this.tabPageImage);
-            this.tabControl1.Controls.Add(this.tabPage2);
-            this.tabControl1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.tabControl1.Location = new System.Drawing.Point(0, 27);
-            this.tabControl1.Name = "tabControl1";
-            this.tabControl1.SelectedIndex = 0;
-            this.tabControl1.Size = new System.Drawing.Size(750, 538);
-            this.tabControl1.TabIndex = 1;
+            this.tabControlImage.Controls.Add(this.tabPageImage);
+            this.tabControlImage.Controls.Add(this.tabPageInfo);
+            this.tabControlImage.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.tabControlImage.Location = new System.Drawing.Point(0, 27);
+            this.tabControlImage.Name = "tabControlImage";
+            this.tabControlImage.SelectedIndex = 0;
+            this.tabControlImage.Size = new System.Drawing.Size(750, 538);
+            this.tabControlImage.TabIndex = 1;
             // 
             // tabPageImage
             // 
             this.tabPageImage.Controls.Add(this.toolStrip2);
-            this.tabPageImage.Controls.Add(this.pictureBox1);
+            this.tabPageImage.Controls.Add(this.pictureBoxImage);
             this.tabPageImage.Location = new System.Drawing.Point(4, 25);
             this.tabPageImage.Name = "tabPageImage";
             this.tabPageImage.Padding = new System.Windows.Forms.Padding(3);
@@ -95,7 +98,7 @@
             this.toolStrip2.Dock = System.Windows.Forms.DockStyle.Bottom;
             this.toolStrip2.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.toolStrip2.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripLabel1,
+            this.toolStripLabelDisplayMode,
             this.toolStripComboBoxDisplayMode,
             this.toolStripSeparator1,
             this.toolStripLabelR,
@@ -111,81 +114,22 @@
             this.toolStrip2.TabIndex = 1;
             this.toolStrip2.Text = "toolStrip2";
             // 
-            // toolStripLabel1
+            // toolStripLabelDisplayMode
             // 
-            this.toolStripLabel1.Name = "toolStripLabel1";
-            this.toolStripLabel1.Size = new System.Drawing.Size(69, 25);
-            this.toolStripLabel1.Text = "显示模式";
+            this.toolStripLabelDisplayMode.Name = "toolStripLabelDisplayMode";
+            this.toolStripLabelDisplayMode.Size = new System.Drawing.Size(105, 25);
+            this.toolStripLabelDisplayMode.Text = "DisplayMode";
             // 
             // toolStripComboBoxDisplayMode
             // 
-            this.toolStripComboBoxDisplayMode.Items.AddRange(new object[] {
-            "原始样式",
-            "波段合成",
-            "单波段"});
             this.toolStripComboBoxDisplayMode.Name = "toolStripComboBoxDisplayMode";
             this.toolStripComboBoxDisplayMode.Size = new System.Drawing.Size(121, 28);
             this.toolStripComboBoxDisplayMode.SelectedIndexChanged += new System.EventHandler(this.toolStripComboBoxDisplayMode_SelectedIndexChanged);
             // 
-            // tabPage2
+            // toolStripSeparator1
             // 
-            this.tabPage2.Controls.Add(this.richTextBox1);
-            this.tabPage2.Location = new System.Drawing.Point(4, 25);
-            this.tabPage2.Name = "tabPage2";
-            this.tabPage2.Padding = new System.Windows.Forms.Padding(3);
-            this.tabPage2.Size = new System.Drawing.Size(742, 509);
-            this.tabPage2.TabIndex = 1;
-            this.tabPage2.Text = "Infos";
-            this.tabPage2.UseVisualStyleBackColor = true;
-            // 
-            // richTextBox1
-            // 
-            this.richTextBox1.BackColor = System.Drawing.Color.White;
-            this.richTextBox1.Dock = System.Windows.Forms.DockStyle.Fill;
-            this.richTextBox1.Font = new System.Drawing.Font("Consolas", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.richTextBox1.Location = new System.Drawing.Point(3, 3);
-            this.richTextBox1.Name = "richTextBox1";
-            this.richTextBox1.ReadOnly = true;
-            this.richTextBox1.Size = new System.Drawing.Size(736, 503);
-            this.richTextBox1.TabIndex = 0;
-            this.richTextBox1.Text = "";
-            // 
-            // toolStrip1
-            // 
-            this.toolStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.toolStripDropDownButton1});
-            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
-            this.toolStrip1.Name = "toolStrip1";
-            this.toolStrip1.Size = new System.Drawing.Size(750, 27);
-            this.toolStrip1.TabIndex = 2;
-            this.toolStrip1.Text = "toolStrip1";
-            // 
-            // toolStripDropDownButton1
-            // 
-            this.toolStripDropDownButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
-            this.toolStripDropDownButton1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.ToolStripMenuItemOpen,
-            this.ToolStripMenuItemClose});
-            this.toolStripDropDownButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButton1.Image")));
-            this.toolStripDropDownButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
-            this.toolStripDropDownButton1.Name = "toolStripDropDownButton1";
-            this.toolStripDropDownButton1.Size = new System.Drawing.Size(53, 24);
-            this.toolStripDropDownButton1.Text = "文件";
-            // 
-            // ToolStripMenuItemOpen
-            // 
-            this.ToolStripMenuItemOpen.Name = "ToolStripMenuItemOpen";
-            this.ToolStripMenuItemOpen.Size = new System.Drawing.Size(126, 26);
-            this.ToolStripMenuItemOpen.Text = "打开...";
-            this.ToolStripMenuItemOpen.Click += new System.EventHandler(this.打开ToolStripMenuItem_Click);
-            // 
-            // ToolStripMenuItemClose
-            // 
-            this.ToolStripMenuItemClose.Name = "ToolStripMenuItemClose";
-            this.ToolStripMenuItemClose.Size = new System.Drawing.Size(126, 26);
-            this.ToolStripMenuItemClose.Text = "关闭";
-            this.ToolStripMenuItemClose.Click += new System.EventHandler(this.ToolStripMenuItemClose_Click);
+            this.toolStripSeparator1.Name = "toolStripSeparator1";
+            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 28);
             // 
             // toolStripLabelR
             // 
@@ -224,33 +168,111 @@
             this.toolStripComboBoxB.Name = "toolStripComboBoxB";
             this.toolStripComboBoxB.Size = new System.Drawing.Size(75, 28);
             // 
-            // toolStripSeparator1
-            // 
-            this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(6, 28);
-            // 
             // toolStripComboBoxSingle
             // 
             this.toolStripComboBoxSingle.Name = "toolStripComboBoxSingle";
             this.toolStripComboBoxSingle.Size = new System.Drawing.Size(75, 28);
+            // 
+            // tabPageInfo
+            // 
+            this.tabPageInfo.Controls.Add(this.richTextBoxInfo);
+            this.tabPageInfo.Location = new System.Drawing.Point(4, 25);
+            this.tabPageInfo.Name = "tabPageInfo";
+            this.tabPageInfo.Padding = new System.Windows.Forms.Padding(3);
+            this.tabPageInfo.Size = new System.Drawing.Size(742, 509);
+            this.tabPageInfo.TabIndex = 1;
+            this.tabPageInfo.Text = "Infos";
+            this.tabPageInfo.UseVisualStyleBackColor = true;
+            // 
+            // richTextBoxInfo
+            // 
+            this.richTextBoxInfo.BackColor = System.Drawing.Color.White;
+            this.richTextBoxInfo.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.richTextBoxInfo.Font = new System.Drawing.Font("华文细黑", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
+            this.richTextBoxInfo.Location = new System.Drawing.Point(3, 3);
+            this.richTextBoxInfo.Name = "richTextBoxInfo";
+            this.richTextBoxInfo.ReadOnly = true;
+            this.richTextBoxInfo.Size = new System.Drawing.Size(736, 503);
+            this.richTextBoxInfo.TabIndex = 0;
+            this.richTextBoxInfo.Text = "";
+            // 
+            // toolStrip1
+            // 
+            this.toolStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.toolStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.toolStripDropDownButtonFile});
+            this.toolStrip1.Location = new System.Drawing.Point(0, 0);
+            this.toolStrip1.Name = "toolStrip1";
+            this.toolStrip1.Size = new System.Drawing.Size(750, 27);
+            this.toolStrip1.TabIndex = 2;
+            this.toolStrip1.Text = "toolStrip1";
+            // 
+            // toolStripDropDownButtonFile
+            // 
+            this.toolStripDropDownButtonFile.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Text;
+            this.toolStripDropDownButtonFile.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.ToolStripMenuItemOpen,
+            this.ToolStripMenuItemClose});
+            this.toolStripDropDownButtonFile.Image = ((System.Drawing.Image)(resources.GetObject("toolStripDropDownButtonFile.Image")));
+            this.toolStripDropDownButtonFile.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripDropDownButtonFile.Name = "toolStripDropDownButtonFile";
+            this.toolStripDropDownButtonFile.Size = new System.Drawing.Size(48, 24);
+            this.toolStripDropDownButtonFile.Text = "File";
+            // 
+            // ToolStripMenuItemOpen
+            // 
+            this.ToolStripMenuItemOpen.Name = "ToolStripMenuItemOpen";
+            this.ToolStripMenuItemOpen.Size = new System.Drawing.Size(136, 26);
+            this.ToolStripMenuItemOpen.Text = "Open...";
+            this.ToolStripMenuItemOpen.Click += new System.EventHandler(this.ToolStripMenuItemOpen_Click);
+            // 
+            // ToolStripMenuItemClose
+            // 
+            this.ToolStripMenuItemClose.Name = "ToolStripMenuItemClose";
+            this.ToolStripMenuItemClose.Size = new System.Drawing.Size(136, 26);
+            this.ToolStripMenuItemClose.Text = "Close";
+            this.ToolStripMenuItemClose.Click += new System.EventHandler(this.ToolStripMenuItemClose_Click);
+            // 
+            // toolStripButton1
+            // 
+            this.toolStripButton1.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton1.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton1.Image")));
+            this.toolStripButton1.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton1.Name = "toolStripButton1";
+            this.toolStripButton1.Size = new System.Drawing.Size(24, 24);
+            this.toolStripButton1.Text = "toolStripButton1";
+            // 
+            // toolStripButton2
+            // 
+            this.toolStripButton2.DisplayStyle = System.Windows.Forms.ToolStripItemDisplayStyle.Image;
+            this.toolStripButton2.Image = ((System.Drawing.Image)(resources.GetObject("toolStripButton2.Image")));
+            this.toolStripButton2.ImageTransparentColor = System.Drawing.Color.Magenta;
+            this.toolStripButton2.Name = "toolStripButton2";
+            this.toolStripButton2.Size = new System.Drawing.Size(24, 24);
+            this.toolStripButton2.Text = "toolStripButton2";
+            // 
+            // toolStripMenuItem1
+            // 
+            this.toolStripMenuItem1.Name = "toolStripMenuItem1";
+            this.toolStripMenuItem1.Size = new System.Drawing.Size(181, 26);
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(750, 565);
-            this.Controls.Add(this.tabControl1);
+            this.Controls.Add(this.tabControlImage);
             this.Controls.Add(this.toolStrip1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "Form1";
-            this.Text = "GDAL影像查看工具 v0.2";
-            ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
-            this.tabControl1.ResumeLayout(false);
+            this.Text = "Title";
+            ((System.ComponentModel.ISupportInitialize)(this.pictureBoxImage)).EndInit();
+            this.tabControlImage.ResumeLayout(false);
             this.tabPageImage.ResumeLayout(false);
             this.tabPageImage.PerformLayout();
             this.toolStrip2.ResumeLayout(false);
             this.toolStrip2.PerformLayout();
-            this.tabPage2.ResumeLayout(false);
+            this.tabPageInfo.ResumeLayout(false);
             this.toolStrip1.ResumeLayout(false);
             this.toolStrip1.PerformLayout();
             this.ResumeLayout(false);
@@ -260,17 +282,17 @@
 
         #endregion
 
-        private System.Windows.Forms.PictureBox pictureBox1;
-        private System.Windows.Forms.TabControl tabControl1;
-        private System.Windows.Forms.TabPage tabPage2;
+        private System.Windows.Forms.PictureBox pictureBoxImage;
+        private System.Windows.Forms.TabControl tabControlImage;
+        private System.Windows.Forms.TabPage tabPageInfo;
         private System.Windows.Forms.TabPage tabPageImage;
         private System.Windows.Forms.ToolStrip toolStrip1;
-        private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButton1;
+        private System.Windows.Forms.ToolStripDropDownButton toolStripDropDownButtonFile;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemOpen;
         private System.Windows.Forms.ToolStripMenuItem ToolStripMenuItemClose;
-        private System.Windows.Forms.RichTextBox richTextBox1;
+        private System.Windows.Forms.RichTextBox richTextBoxInfo;
         private System.Windows.Forms.ToolStrip toolStrip2;
-        private System.Windows.Forms.ToolStripLabel toolStripLabel1;
+        private System.Windows.Forms.ToolStripLabel toolStripLabelDisplayMode;
         private System.Windows.Forms.ToolStripComboBox toolStripComboBoxDisplayMode;
         private System.Windows.Forms.ToolStripSeparator toolStripSeparator1;
         private System.Windows.Forms.ToolStripLabel toolStripLabelR;
@@ -280,6 +302,9 @@
         private System.Windows.Forms.ToolStripLabel toolStripLabelB;
         private System.Windows.Forms.ToolStripComboBox toolStripComboBoxB;
         private System.Windows.Forms.ToolStripComboBox toolStripComboBoxSingle;
+        private System.Windows.Forms.ToolStripButton toolStripButton2;
+        private System.Windows.Forms.ToolStripButton toolStripButton1;
+        private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
     }
 }
 
