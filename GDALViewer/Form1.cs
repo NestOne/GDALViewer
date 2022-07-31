@@ -10,12 +10,15 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using OpenCvSharp;
 
-namespace TiffViewer
+namespace GDALViewer
 {
     public partial class Form1 : Form
     {
-        private static readonly String VERSION = " v0.2";
+        private bool m_hasReadInfo = false;
+        private static readonly String VERSION = " v0.3";
+        private static Dictionary<String, String> dicDriverExt = new Dictionary<string, string>();
 
         private enum RasterMode
         {
@@ -27,6 +30,18 @@ namespace TiffViewer
         static Form1()
         {
             GdalConfiguration.ConfigureGdal();
+
+            var num = Gdal.GetDriverCount();
+            for (var i = 0; i < num; i++)
+            {
+                var driver = Gdal.GetDriver(i);
+
+                string extension = driver.GetMetadataItem("DMD_EXTENSION", "");
+                if (!String.IsNullOrWhiteSpace(extension) && !dicDriverExt.ContainsKey(extension))
+                {
+                    dicDriverExt.Add(extension, string.Format("{1} - {2}|*.{0}", extension, driver.ShortName, driver.LongName));
+                }
+            }
         }
 
         private String m_imagePath = "";
@@ -264,17 +279,94 @@ namespace TiffViewer
                 return;
             }
 
+            System.IO.FileInfo file = new System.IO.FileInfo(m_imagePath);
+
             Dataset dataset = Gdal.Open(m_imagePath, Access.GA_ReadOnly);
 
-            richTextBoxInfo.Text = GDALInfo.GetInfo(dataset);
+            if(dataset == null)
+            {
+                toolStripStatusLabel.Text = "File open failed";
+                return;
+            }
+            //String[] rpcs = dataset.GetMetadata("RPC");
+
+            if(!m_hasReadInfo)
+            {
+                richTextBoxInfo.Text = GDALInfo.GetInfo(dataset);
+                m_hasReadInfo = true;
+            }
+
+            if(dataset.RasterCount < 1)
+            {
+                toolStripStatusLabel.Text = "File has no bands";
+                return;
+            }
+
+            int overviewCount = dataset.GetRasterBand(1).GetOverviewCount();
+            if (overviewCount == 0 && file.Length > 1024 * 1024 * 200) //没有金字塔的数据且超过100MB，默认不显示，需要手动刷新
+            {
+                toolStripStatusLabel.Text = GDALViewer.Properties.GDALViewerResource.StopDisplayImageForBigImageNoOverview;
+                return;
+            }
 
             // Creating a Bitmap to store the GDAL image in
             // _bitmap = new Bitmap(width, height, PixelFormat.Format32bppRgb);
 
             int srcWidth = dataset.RasterXSize;
             int srcHeight = dataset.RasterYSize;
+
+            if(width > height)
+            {
+                // 控件横向，图像纵向。影像高缩放到图像高度
+                width = (int)(height / (double)srcHeight * srcWidth);
+                
+            }
+            else 
+            {
+               // 图像和控件方向相同，不用修改
+                height = (int)(width / (double)srcWidth * srcHeight);
+            }
+            
             _bitmap = ReadBitmapDirect(dataset, 0, 0, srcWidth, srcHeight, width, height);
             pictureBoxImage.Image = _bitmap;
+
+            // Mat source = new Mat(m_imagePath, ImreadModes.Color);
+            // int percent = 50;
+            // double half_percent = percent / 200.0;
+            // Mat[] splits = Cv2.Split(source);
+
+            // Mat[] outChanle;
+            // foreach (var channel in splits)
+            // {
+            //     int chaWidth = channel.Size().Width;
+            //     int chaHeight = channel.Size().Height;
+
+            //     long vec_size = width * height;
+            //     Mat flat = channel.Reshape(1, 1);
+            //     Cv2.Sort(flat, flat, SortFlags.Ascending | SortFlags.EveryRow);
+
+            //     int lowval = flat.At<byte>((int)Math.Floor(flat.Cols * half_percent));
+            //     int highval = flat.At<byte>((int)Math.Ceiling(flat.Cols * (1-half_percent)));
+
+            //     Debug.WriteLine("lowval" + lowval + " highval" + highval);
+
+            //     Mat newMat = new Mat();
+            //     newMat.CopyTo(flat);
+
+            //     newMat.SetTo(lowval, )
+            // }
+            
+        
+        
+            // source.Resize(new OpenCvSharp.Size(500, 500));
+            // Cv2.ImShow("Demo", source);
+            // 
+            // Cv2.WaitKey(0);
+            // using (var window = new Window("people detector", WindowMode.Normal, source))
+            // {
+            //    // window.SetProperty(WindowProperty.Fullscreen, 1);
+            //     Cv2.WaitKey(0);
+            // }
         }
 
 
@@ -289,8 +381,7 @@ namespace TiffViewer
             stringBuilder.Append(GDALViewer.Properties.GDALViewerResource.SomeImageFormat);
             stringBuilder.Append("|*.JPG;*.PNG;*.GIF");
 
-            Dictionary<String, String> dic = GdalConfiguration.GetDriverExtDic();
-            foreach (String val in dic.Values)
+            foreach (String val in dicDriverExt.Values)
             {
                 stringBuilder.Append("|");
                 stringBuilder.Append(val);
@@ -345,6 +436,28 @@ namespace TiffViewer
 
             bool singleMode = mode == 2;
             toolStripComboBoxSingle.Visible = singleMode;
+        }
+
+        private void buttonSpeedTest_Click(object sender, EventArgs e)
+        {
+            var watch = Stopwatch.StartNew();
+
+            int width = pictureBoxImage.Width;
+            int height = pictureBoxImage.Height;
+            Dataset dataset = Gdal.Open(m_imagePath, Access.GA_ReadOnly);
+            int srcWidth = dataset.RasterXSize / 3;
+            int srcHeight = dataset.RasterYSize / 3;
+            _bitmap = ReadBitmapDirect(dataset, 0, 0, srcWidth, srcHeight, width, height);
+            watch.Stop();
+            dataset.Dispose();
+
+            MessageBox.Show("Read speed is " + watch.Elapsed.ToString());
+        }
+
+        private void buttonNC2Tiff_Click(object sender, EventArgs e)
+        {
+            FormNC2Tiff formNC2Tiff = new FormNC2Tiff();
+            formNC2Tiff.Show();
         }
     }
 }

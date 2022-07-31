@@ -156,4 +156,7 @@
   <data name="SomeRasterFormat" xml:space="preserve">
     <value>Raster Format</value>
   </data>
+  <data name="StopDisplayImageForBigImageNoOverview" xml:space="preserve">
+    <value>Image file size bigger than 100MB and no overviews, click 'Refresh' to display</value>
+  </data>
 </root>

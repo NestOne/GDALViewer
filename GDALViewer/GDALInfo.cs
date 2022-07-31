@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 
-namespace TiffViewer
+namespace GDALViewer
 {
     /******************************************************************************
  * $Id$
@@ -271,6 +271,17 @@ namespace TiffViewer
                     {
                         builder.AppendLine(" Description: " + band.GetDescription());
                     }
+
+                    string[] bandMetadata = band.GetMetadata("");
+                    if (bandMetadata.Length > 0)
+                    {
+                        builder.AppendLine("Metadata:");
+                        for (int iMeta = 0; iMeta < bandMetadata.Length; iMeta++)
+                        {
+                            builder.AppendLine("  " + bandMetadata[iMeta]);
+                        }
+                    }
+
                 }
             }
             catch (Exception e)

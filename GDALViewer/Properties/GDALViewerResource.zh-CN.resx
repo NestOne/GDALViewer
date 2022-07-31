@@ -156,4 +156,7 @@
   <data name="SomeRasterFormat" xml:space="preserve">
     <value>常见影像格式</value>
   </data>
+  <data name="StopDisplayImageForBigImageNoOverview" xml:space="preserve">
+    <value>影像文件超过100MB并且没有构建金字塔，请点击刷新按钮手动显示</value>
+  </data>
 </root>
